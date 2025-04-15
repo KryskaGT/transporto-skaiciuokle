@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <title>Išplėstinė transporto skaičiuoklė</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 40px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: #ffffff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .section h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #34495e;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #fafafa;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 30px;
+      padding: 14px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    #results, #tableResults {
+      margin-top: 40px;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    th {
+      background-color: #ecf0f1;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    @media (max-width: 600px) {
+      input, select, button {
+        font-size: 14px;
+      }
+
+      th, td {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🚗 Transporto pasirinkimo skaičiuoklė</h2>
+
+    <div class="section">
+      <h3>📅 Naudojimo dažnis</h3>
+      <label>Kiek kartų per savaitę naudojiesi transportu?</label>
+      <input type="number" id="uses" value="3">
+
+      <label>Kiek kilometrų nuvažiuoji per savaitę?</label>
+      <input type="number" id="weeklyKm" value="80">
+
+      <label>Vidutinė vienos kelionės trukmė (min):</label>
+      <input type="number" id="tripDuration" value="20">
+    </div>
+
+    <div class="section">
+      <h3>🚕 Bolt</h3>
+      <label>Bolt paslaugos lygis:</label>
+      <select id="boltType">
+        <option value="standard">Standard</option>
+        <option value="comfort">Comfort</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🚙 CityBee</h3>
+      <label>CityBee tipas:</label>
+      <select id="citybeeType">
+        <option value="standard">Standard</option>
+        <option value="premium">Premium</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🚌 Viešasis transportas</h3>
+      <label>Viešojo transporto bilieto trukmė:</label>
+      <select id="transportType">
+        <option value="29">1 mėn.</option>
+        <option value="81">3 mėn.</option>
+        <option value="310">12 mėn.</option>
+      </select>
+
+      <label>Nuolaida viešajam transportui:</label>
+      <select id="discount">
+        <option value="1">Be nuolaidos</option>
+        <option value="0.5">50% nuolaida</option>
+        <option value="0.2">80% nuolaida</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <h3>🚗 Nuosavas automobilis</h3>
+      <label>Degalų kaina (€/l):</label>
+      <input type="number" id="fuelPrice" value="1.5">
+
+      <label>Automobilio sąnaudos (l/100 km):</label>
+      <input type="number" id="fuelConsumption" value="7">
+
+      <label>Kiti mėnesiniai kaštai (draudimas, remontas ir t.t.) (€):</label>
+      <input type="number" id="carExtras" value="80">
+    </div>
+
+    <div class="section">
+      <h3>⏳ Laikotarpis ir prioritetas</h3>
+      <label>Laikotarpis:</label>
+      <select id="period">
+        <option value="1">1 mėnuo</option>
+        <option value="6">Pusė metų</option>
+        <option value="12">Metai</option>
+        <option value="36">3 metai</option>
+        <option value="60">5 metai</option>
+      </select>
+
+      <label>Pasirinkimo prioritetas:</label>
+      <select id="preference">
+        <option value="pigiausias">Pigiausias</option>
+        <option value="brangiausias">Brangiausias</option>
+        <option value="komfortiskiausias">Komfortiškiausias</option>
+        <option value="balansas">Balansas tarp kainos ir patogumo</option>
+      </select>
+    </div>
+
+    <button onclick="calculateCosts()">Skaičiuoti</button>
+
+    <div id="results"></div>
+    <div id="tableResults"></div>
+  </div>
+
+  <script>
+    function calculateCosts() {
+  const uses = parseInt(document.getElementById('uses').value);
+  const kmPerWeek = parseFloat(document.getElementById('weeklyKm').value);
+  const tripMinutes = parseFloat(document.getElementById('tripDuration').value);
+  const boltType = document.getElementById('boltType').value;
+  const citybeeType = document.getElementById('citybeeType').value;
+  const transportRate = parseFloat(document.getElementById('transportType').value);
+  const discount = parseFloat(document.getElementById('discount').value);
+  const fuelPrice = parseFloat(document.getElementById('fuelPrice').value);
+  const fuelConsumption = parseFloat(document.getElementById('fuelConsumption').value);
+  const carExtras = parseFloat(document.getElementById('carExtras').value);
+  const period = parseInt(document.getElementById('period').value);
+  const preference = document.getElementById('preference').value;
+
+  const weeksPerMonth = 4.33;
+  const kmPerMonth = kmPerWeek * weeksPerMonth;
+  const usesPerMonth = uses * weeksPerMonth;
+  const months = period;
+
+  // Viešasis transportas
+  const transportMonths = transportRate === 29 ? 1 : transportRate === 81 ? 3 : 12;
+  const publicMonthly = (transportRate / transportMonths) * discount;
+
+  // Bolt
+  const boltBase = boltType === "comfort" ? 1.2 : 1.0;
+  const boltPerKm = boltType === "comfort" ? 0.53 : 0.44;
+  const boltPerMin = boltType === "comfort" ? 0.19 : 0.16;
+  const avgTripKm = kmPerMonth / usesPerMonth;
+  const boltTripCost = boltBase + (avgTripKm * boltPerKm) + (tripMinutes * boltPerMin);
+  const boltCost = boltTripCost * usesPerMonth;
+
+  // CityBee
+  const unlockFee = citybeeType === "premium" ? 1.5 : 1.0;
+  const citybeePerMin = citybeeType === "premium" ? 0.4 : 0.3;
+  const citybeePerKm = citybeeType === "premium" ? 0.35 : 0.25;
+  const citybeeTripCost = unlockFee + (tripMinutes * citybeePerMin) + (avgTripKm * citybeePerKm);
+  const citybeeCost = citybeeTripCost * usesPerMonth;
+
+  // Nuosavas automobilis
+  const fuelMonthly = (fuelConsumption / 100) * kmPerMonth * fuelPrice;
+  const ownCarMonthly = fuelMonthly + carExtras;
+
+  // Bendros išlaidos laikotarpiui
+  const allCosts = {
+    "CityBee": citybeeCost * months,
+    "Bolt": boltCost * months,
+    "Viešasis transportas": publicMonthly * months,
+    "Nuosavas automobilis": ownCarMonthly * months
+  };
+
+  // Rekomendacija
+  let sorted = Object.entries(allCosts).sort((a,b) => a[1]-b[1]);
+  let recommendation = "";
+  if (preference === "pigiausias") recommendation = `✨ Pigiausias: ${sorted[0][0]}`;
+  else if (preference === "brangiausias") recommendation = `❌ Brangiausias: ${sorted[3][0]}`;
+  else if (preference === "komfortiskiausias") recommendation = `🚗 Komfortiškiausias: Bolt`;
+  else recommendation = `🔄 Balansuotas pasirinkimas: CityBee arba Nuosavas automobilis`;
+
+  const periodTextMap = {
+  1: "1 mėnesį",
+  6: "6 mėnesius",
+  12: "12 mėnesių",
+  36: "3 metus",
+  60: "5 metus"
+};
+
+document.getElementById("results").innerHTML = `
+  <h3>📊 Išlaidos per ${periodTextMap[period]}</h3>
+  <p>${recommendation}</p>
+`;
+
+
+  let tableHTML = `<table><tr><th>Paslauga</th><th>Išlaidos (€)</th></tr>`;
+  for (const [key, value] of Object.entries(allCosts)) {
+    tableHTML += `<tr><td>${key}</td><td>€${value.toFixed(2)}</td></tr>`;
+  }
+  tableHTML += `</table>`;
+
+  // 2x dažnis
+  tableHTML += `<br><h4>🔁 Jei naudotumėtės 2 kartus dažniau:</h4><table><tr><th>Paslauga</th><th>Išlaidos (€)</th></tr>`;
+  for (const [key, value] of Object.entries(allCosts)) {
+  const adjustedValue = key === "Viešasis transportas" ? value : value * 2;
+  tableHTML += `<tr><td>${key}</td><td>€${adjustedValue.toFixed(2)}</td></tr>`;
+}
+
+  tableHTML += `</table>`;
+
+  document.getElementById("tableResults").innerHTML = tableHTML;
+}
+  </script>
+</body>
+</html>
